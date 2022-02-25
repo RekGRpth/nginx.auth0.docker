@@ -1,15 +1,15 @@
 server {
     listen 443 ssl http2;
     ssl_stapling on;
-    server_name {NGINX_SERVER_NAME};
+    server_name ${NGINX_SERVER_NAME};
     easy_jwt_cookie id_token;
-    easy_jwt_key HS256 {AUTH0_CLIENT_SECRET};
+    easy_jwt_key HS256 ${AUTH0_CLIENT_SECRET};
     error_page 401 = @auth;
-    set_escape_uri $client_id_escape {AUTH0_CLIENT_ID};
-    set_escape_uri $client_secret_escape {AUTH0_CLIENT_SECRET};
+    set_escape_uri $client_id_escape ${AUTH0_CLIENT_ID};
+    set_escape_uri $client_secret_escape ${AUTH0_CLIENT_SECRET};
     set_escape_uri $request_uri_escape $request_uri;
     set_escape_uri $redirect_uri_escape https://$host/login?request_uri=$request_uri_escape;
-    set $domain {AUTH0_DOMAIN};
+    set $domain ${AUTH0_DOMAIN};
     location @auth {
         add_header Set-Cookie "id_token=; Max-Age=0";
         set_escape_uri $scope_escape "openid profile";
@@ -25,10 +25,6 @@ server {
         set_unescape_uri $request_uri_unescape $arg_request_uri_or_slash;
         return 303 $request_uri_unescape;
     }
-    location =/logout {
-        add_header Set-Cookie "id_token=; Max-Age=0";
-        return 303 /;
-    }
     location =/token {
         internal;
         proxy_method POST;
@@ -38,9 +34,8 @@ server {
         proxy_ssl_server_name on;
         proxy_pass https://$domain/oauth/token;
     }
-    location =/json {
+    location / {
         default_type application/json;
         easy_jwt hmac;
-        echo -n $json_var;
     }
 }
