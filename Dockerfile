@@ -69,9 +69,10 @@ RUN set -eux; \
     mkdir -p "$HOME/src/nginx/modules"; \
     cd "$HOME/src/nginx/modules"; \
     git clone -b main https://github.com/RekGRpth/nginx-ejwt-module.git; \
+    git clone -b master https://github.com/openresty/set-misc-nginx-module.git; \
     git clone -b master https://github.com/RekGRpth/ngx_http_evaluate_module.git; \
     git clone -b master https://github.com/RekGRpth/ngx_http_json_module.git; \
-    git clone -b master https://github.com/vision5/ngx_devel_kit; \
+    git clone -b master https://github.com/vision5/ngx_devel_kit.git; \
     cd "$HOME/src/nginx"; \
     auto/configure \
         --add-dynamic-module="modules/ngx_devel_kit $(find modules -type f -name "config" | grep -v -e ngx_devel_kit -e "\.git" -e "\/t\/" | while read -r NAME; do echo -n "`dirname "$NAME"` "; done)" \
