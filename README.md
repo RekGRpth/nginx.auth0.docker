@@ -7,6 +7,8 @@ AUTH0_DOMAIN=YOUR_AUTH0_DOMAIN
 NGINX_SERVER_NAME=YOUR_NGINX_SERVER_NAME
 ```
 
+2) put your cert and key into files `/etc/certs/cert.pem` and `/etc/certs/key.pem`
+
 3) run
 ```sh
 docker-compose up
