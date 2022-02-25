@@ -69,9 +69,9 @@ RUN set -eux; \
     mkdir -p "$HOME/src/nginx/modules"; \
     cd "$HOME/src/nginx/modules"; \
     git clone -b main https://github.com/RekGRpth/nginx-ejwt-module.git; \
-    git clone -b master https://github.com/openresty/set-misc-nginx-module.git; \
     git clone -b master https://github.com/RekGRpth/ngx_http_evaluate_module.git; \
     git clone -b master https://github.com/RekGRpth/ngx_http_json_module.git; \
+    git clone -b master https://github.com/RekGRpth/set-misc-nginx-module.git; \
     git clone -b master https://github.com/vision5/ngx_devel_kit.git; \
     cd "$HOME/src/nginx"; \
     auto/configure \
