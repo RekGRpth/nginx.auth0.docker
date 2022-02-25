@@ -6,7 +6,7 @@ services:
     env_file:
         - .env
     ports:
-      - 8080:443
+      - 443:443
     volumes:
         - ./auth0.conf.template:/etc/nginx/templates/auth0.conf.template:ro
         - /etc/certs:/etc/certs:ro
