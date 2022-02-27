@@ -2,6 +2,7 @@ server {
     listen 443 ssl http2;
     ssl_stapling on;
     server_name ${NGINX_SERVER_NAME};
+    easy_jwt hmac $cookie_id_token;
     easy_jwt_key HS256 ${AUTH0_CLIENT_SECRET};
     error_page 401 = @auth;
     set_escape_uri $client_id_escape ${AUTH0_CLIENT_ID};
@@ -34,7 +35,5 @@ server {
         proxy_pass https://$domain/oauth/token;
     }
     location / {
-        default_type application/json;
-        easy_jwt hmac $cookie_id_token;
     }
 }
