@@ -10,7 +10,4 @@ services:
     volumes:
         - ./auth0.conf.template:/etc/nginx/templates/auth0.conf.template:ro
         - ./cert.pem:/etc/certs/cert.pem:ro
-        - ./http.conf:/etc/nginx/http.conf:ro
         - ./key.pem:/etc/certs/key.pem:ro
-        - ./modules.conf:/etc/nginx/modules.conf:ro
-        - ./nginx.conf:/etc/nginx/nginx.conf:ro

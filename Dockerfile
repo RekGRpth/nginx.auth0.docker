@@ -28,6 +28,7 @@ RUN set -eux; \
         expect-dev \
         ffcall \
         file \
+        findutils \
         g++ \
         gcc \
         gd-dev \
@@ -69,10 +70,10 @@ RUN set -eux; \
     mkdir -p "$HOME/src/nginx/modules"; \
     cd "$HOME/src/nginx/modules"; \
     git clone -b main https://github.com/RekGRpth/nginx-ejwt-module.git; \
+    git clone -b master https://github.com/RekGRpth/ngx_devel_kit.git; \
     git clone -b master https://github.com/RekGRpth/ngx_http_evaluate_module.git; \
     git clone -b master https://github.com/RekGRpth/ngx_http_json_module.git; \
     git clone -b master https://github.com/RekGRpth/set-misc-nginx-module.git; \
-    git clone -b master https://github.com/vision5/ngx_devel_kit.git; \
     cd "$HOME/src/nginx"; \
     auto/configure \
         --add-dynamic-module="modules/ngx_devel_kit $(find modules -type f -name "config" | grep -v -e ngx_devel_kit -e "\.git" -e "\/t\/" | while read -r NAME; do echo -n "`dirname "$NAME"` "; done)" \
@@ -125,6 +126,9 @@ RUN set -eux; \
         --with-threads \
     ; \
     make -j"$(nproc)" install; \
+    find /usr/local/lib/nginx -type f -name "*.so" ! -name "ngx_stream_*.so" -printf 'load_module "modules/%f";\n' | sort -u >/etc/nginx/modules.conf; \
+    echo 'load_module "modules/ngx_stream_module.so";' >>/etc/nginx/modules.conf; \
+    find /usr/local/lib/nginx -type f -name "ngx_stream_*.so" ! -name "ngx_stream_module.so" -printf 'load_module "modules/%f";\n' | sort -u >>/etc/nginx/modules.conf; \
     rm /etc/nginx/*.default; \
     ln -fs /usr/local/lib/nginx /etc/nginx/modules; \
     ln -fs /dev/stdout /var/log/nginx/std.log; \
@@ -143,3 +147,4 @@ RUN set -eux; \
     chown -R "$USER":"$GROUP" "$HOME"; \
     install -d -m 0700 -o "$USER" -g "$GROUP" /var/tmp/nginx; \
     echo done
+ADD nginx.conf /etc/nginx/
